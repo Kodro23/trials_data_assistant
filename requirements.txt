@@ -13,3 +13,6 @@ faiss-cpu>=1.15.1
 langgraph>=1.4.7
 msoffcrypto-tool>=6.0.0
 
+#app
+streamlit>=1.65.0
+

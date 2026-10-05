@@ -25,29 +25,13 @@ MODEL = "gpt-5-nano"
 
 # Define the TypedDict to store the agent's state
 class AgentState(TypedDict):
-  start: bool
-  conversation: int #conversation turns
   question: str # customer's questions
   query: str # True if SQL query, False if paper search
   sql_query: str # sql query to be executed
   sql_answer: str # answer to the question from the database
   rag_answer: str # answer to the question from the papers
-  recursion_limit: int # limits endless loops
+  final_answer: str # final answer returned by the agent
   memory: list # conversation history
-  continue_chat: bool
-
-
-# Define the greeting node
-def greetings(state):
-  # greet the customer
-  print("Hello! How can I help you?")
-  # capture the user input
-  user_input = input()
-  # Update the state
-  state['question'] = user_input
-  state['conversation'] = 1
-  state['memory'] = [user_input]
-  return state
 
 
 # Define function to check if the question needs a SQL query
@@ -102,8 +86,7 @@ def SQL_query(state):
   answer = retrive_db_from_query(question)
   # Update the state
   state['sql_answer'] = answer
-  # Print the answer
-  print(answer)
+  state['final_answer'] = answer
   return state
 
 
@@ -115,62 +98,19 @@ def paper_search(state):
   answer = read_papers(question)
   # Update the state
   state['rag_answer'] = answer
-  # Print the answer
-  print(answer)
+  state['final_answer'] = answer
   return state
-
-
-# Define function to figure out if we need another conversation round
-def further_question(state):
-  print("Ask another question or type 'exit' to stop:")
-  user_input = input()
-  # simple exit condition
-  if user_input.lower() in ["exit", "no", "thanks", "that's all", "thank you"]:
-    state['continue_chat'] = False
-  else:
-    # update the conversation memory
-    state['memory'].append(user_input)
-    state['conversation'] += 1
-    state['question'] = user_input
-    state['continue_chat'] = True
-  return state
-
-
-# define a conditional router
-def continue_router(state):
-  if state['continue_chat']:
-    return "continue"
-  return "end"
 
 
 def build_agent():
-  # Initialize the agent's state
-  initial_state = AgentState(
-    start=True,
-    conversation=0,
-    question="",
-    query="",
-    sql_query="",
-    sql_answer="",
-    rag_answer="",
-    recursion_limit=5,
-    memory=[],
-    continue_chat=True
-  )
   # Initialize a StateGraph
   workflow = StateGraph(AgentState)
   # Add the functions as nodes
-  workflow.add_node("greetings", greetings)
   workflow.add_node("check_if_query", check_if_query)
   workflow.add_node("SQL_query", SQL_query)
   workflow.add_node("paper_search", paper_search)
-  workflow.add_node("further_question", further_question)
   # Add an entry point
-  workflow.set_entry_point("greetings")
-  # Connecting the nodes (edges)
-  workflow.add_edge("greetings", "check_if_query")
-  workflow.add_edge("SQL_query", "further_question")
-  workflow.add_edge("paper_search", "further_question")
+  workflow.set_entry_point("check_if_query")
   # Conditional edges
   workflow.add_conditional_edges(
     "check_if_query",
@@ -180,14 +120,28 @@ def build_agent():
       "paper_search": "paper_search"
     }
   )
-  workflow.add_conditional_edges(
-    "further_question",
-    continue_router,
-    {
-      "continue": "check_if_query",
-      "end": END
-    }
-  )
+  # Connecting the nodes (edges)
+  workflow.add_edge("SQL_query", END)
+  workflow.add_edge("paper_search", END)
   # Compile the workflow
   app = workflow.compile()
   return app
+
+
+# Define function to ask the agent a question
+def ask_agent(question):
+  # Initialize the agent's state
+  initial_state = AgentState(
+    question=question,
+    query="",
+    sql_query="",
+    sql_answer="",
+    rag_answer="",
+    final_answer="",
+    memory=[]
+  )
+  # Build the agent
+  app = build_agent()
+  # Invoke the agent
+  result = app.invoke(initial_state)
+  return result

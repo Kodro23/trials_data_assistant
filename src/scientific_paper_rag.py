@@ -3,11 +3,14 @@ from openai import OpenAI
 import os
 import sys
 from pathlib import Path
+from dotenv import load_dotenv
+
+
 
 #seting directory
-project_root = Path.cwd().parent
+project_root = Path(__file__).resolve().parent.parent
 sys.path.append(str(project_root))
-
+load_dotenv()
 #set_up
 docs_directory=str(project_root)+"\\data\\scientific_papers"
 supported_extensions=[".txt",".py",".pdf"]

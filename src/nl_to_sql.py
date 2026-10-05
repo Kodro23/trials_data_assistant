@@ -4,11 +4,14 @@ import os
 import sys
 from pathlib import Path
 from src.database import query_db
+from dotenv import load_dotenv
+
+
 
 #seting directory
-project_root = Path.cwd().parent
+project_root = Path(__file__).resolve().parent.parent
 sys.path.append(str(project_root))
-
+load_dotenv()
 #Set the api key in the os
 API_KEY=os.getenv("OPENAI_API_KEY")
 os.environ["OPENAI_API_KEY"]=API_KEY

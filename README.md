@@ -21,6 +21,7 @@ Python 3.13.13
 Points of improvement:
 - Evaluate and improve agents (benchmark, compare to fine-tuned LLM ) 
 - Add more papers to the data and add an hybrid option to user's question (SQL+Paper search)
+- Improve displaying of answers in the app
 
 <!-- User's guide -->
 ## 📄II. User's guide
@@ -47,7 +48,8 @@ cd /trials_data_assistant
     ```
     - To run the API use the command :
     ```
-    uvicorn app.api:app --reload --host "0.0.0.0" --port 8000
+    streamlit run app.py 
     ```
+    Then click on URL.
     
 
