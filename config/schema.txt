@@ -181,7 +181,8 @@ ctgov.studies.brief_title. A study should not be classified as an ovarian-cancer
 trial merely because a condition contains the word ovarian. The condition must
 represent an ovarian malignancy/cancer. Terms such as ovarian failure, ovarian 
 insufficiency, ovarian cysts, ovarian function, etc. must not qualify. Query the 
-description column as well if needed
+description column as well if needed. Include the full disease name in the query
+(ex: if disease is "ovarian cancer" the query should include ILIKE %"ovarian cancer"%)
 
 Relevant condition names may use different terminology, such as ovarian
 cancer, ovarian carcinoma, epithelial ovarian cancer, or related terminology.
