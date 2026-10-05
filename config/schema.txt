@@ -1,0 +1,209 @@
+DATABASE: AACT (Aggregate Analysis of ClinicalTrials.gov)
+SCHEMA: ctgov
+
+The database contains ClinicalTrials.gov study records.
+
+This application focuses on clinical trials related to ovarian cancer.
+
+==================================================
+TABLE: ctgov.studies
+==================================================
+
+Purpose:
+Contains the main study-level information.
+There is one row per clinical trial.
+
+Relevant columns:
+
+nct_id
+- Type: text
+- ClinicalTrials.gov unique trial identifier.
+- Example: NCT01936363
+
+brief_title
+- Type: text
+- Short public title of the clinical trial.
+
+official_title
+- Type: text
+- Full official title of the clinical trial.
+
+study_type
+- Type: text
+- Type of study.
+- Common values include:
+  INTERVENTIONAL
+  OBSERVATIONAL
+  EXPANDED_ACCESS
+
+phase
+- Type: text
+- Clinical trial phase.
+- Possible values include:
+  EARLY_PHASE1
+  PHASE1
+  PHASE2
+  PHASE3
+  PHASE4
+  NA
+- May be NULL for studies for which trial phase is not applicable.
+
+overall_status
+- Type: text
+- Current overall recruitment/study status.
+- Examples include:
+  RECRUITING
+  NOT_YET_RECRUITING
+  ACTIVE_NOT_RECRUITING
+  COMPLETED
+  SUSPENDED
+  TERMINATED
+  WITHDRAWN
+  UNKNOWN
+
+enrollment
+- Type: integer
+- Number of participants.
+- May represent estimated or actual enrollment.
+
+enrollment_type
+- Type: text
+- Indicates whether enrollment is ESTIMATED or ACTUAL.
+
+start_date
+- Type: date
+- Study start date.
+
+primary_completion_date
+- Type: date
+- Date on which final data collection for the primary outcome was completed
+  or is expected to be completed.
+
+completion_date
+- Type: date
+- Overall study completion date.
+
+source
+- Type: text
+- Lead sponsor of the study.
+
+number_of_arms
+- Type: integer
+- Number of intervention arms for an interventional study.
+
+
+==================================================
+TABLE: ctgov.conditions
+==================================================
+
+Purpose:
+Contains the diseases or health conditions associated with each clinical trial.
+
+A study can have multiple conditions, so multiple rows can exist for the same nct_id.
+
+Relevant columns:
+
+nct_id
+- Type: text
+- ClinicalTrials.gov trial identifier.
+
+name
+- Type: text
+- Name of the condition associated with the study.
+- Examples may include:
+  Ovarian Cancer
+  Epithelial Ovarian Cancer
+  Ovarian Carcinoma
+
+
+==================================================
+TABLE: ctgov.interventions
+==================================================
+
+Purpose:
+Contains interventions investigated in clinical trials.
+
+A study can have multiple interventions, so multiple rows can exist for the same nct_id.
+
+Relevant columns:
+
+nct_id
+- Type: text
+- ClinicalTrials.gov trial identifier.
+
+intervention_type
+- Type: text
+- Type of intervention.
+- Examples may include DRUG, DEVICE, BIOLOGICAL, PROCEDURE,
+  BEHAVIORAL, and OTHER.
+
+name
+- Type: text
+- Name of the intervention.
+- Examples may include drug or treatment names.
+
+description
+- Type: text
+- Additional description of the intervention, when available.
+
+
+==================================================
+RELATIONSHIPS
+==================================================
+
+The three tables are linked through nct_id.
+
+ctgov.studies.nct_id = ctgov.conditions.nct_id
+
+ctgov.studies.nct_id = ctgov.interventions.nct_id
+
+ctgov.studies contains one row per trial.
+
+ctgov.conditions may contain multiple rows per trial.
+
+ctgov.interventions may contain multiple rows per trial.
+
+Therefore, joining studies with both conditions and interventions can produce
+multiple rows for the same clinical trial.
+
+
+==================================================
+OVARIAN CANCER SCOPE
+==================================================
+
+This application specializes in ovarian-cancer clinical trials.
+
+Use ctgov.conditions to determine whether a clinical trial is related to
+ovarian cancer.
+
+Do not rely only on the presence of the words "ovarian cancer" in
+ctgov.studies.brief_title. A study should not be classified as an ovarian-cancer 
+trial merely because a condition contains the word ovarian. The condition must
+represent an ovarian malignancy/cancer. Terms such as ovarian failure, ovarian 
+insufficiency, ovarian cysts, ovarian function, etc. must not qualify. Query the 
+description column as well if needed
+
+Relevant condition names may use different terminology, such as ovarian
+cancer, ovarian carcinoma, epithelial ovarian cancer, or related terminology.
+
+When counting clinical trials after joining tables containing multiple rows
+per trial, count unique trials using nct_id rather than counting joined rows.
+
+
+==================================================
+SQL RULES
+==================================================
+
+Only generate read-only SELECT queries.
+
+Use only the tables and columns documented in this file.
+
+Use the ctgov schema explicitly when referring to tables.
+
+Do not generate INSERT, UPDATE, DELETE, DROP, ALTER, CREATE, TRUNCATE,
+or other database-modifying statements.
+
+When the user asks for the number of trials, avoid duplicate counting caused
+by one-to-many joins.
+
+When appropriate, use DISTINCT nct_id or COUNT(DISTINCT nct_id).

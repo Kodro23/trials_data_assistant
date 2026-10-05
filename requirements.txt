@@ -1,2 +1,8 @@
-openai
-python-dotenv
+#database manipulation
+python-dotenv==1.2.4
+psycopg2-binary==2.9.13
+
+
+#RAG
+openai==3.24.0
+
