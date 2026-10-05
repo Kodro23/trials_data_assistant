@@ -208,3 +208,5 @@ When the user asks for the number of trials, avoid duplicate counting caused
 by one-to-many joins.
 
 When appropriate, use DISTINCT nct_id or COUNT(DISTINCT nct_id).
+Generated SQL must be valid PostgreSQL. When using SELECT DISTINCT with ORDER BY, every ORDER BY 
+expression must also appear in the SELECT list.

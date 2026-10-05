@@ -1,8 +1,15 @@
 #database manipulation
-python-dotenv==1.2.4
-psycopg2-binary==2.9.13
+python-dotenv>=1.2.4
+psycopg2-binary>=2.9.13
 
 
 #RAG
-openai==3.24.0
+openai>=3.24.0
+langchain>=1.4.3
+langchain-community>=0.4.2 
+langchain-openai>=1.6.7
+unstructured>=0.27.10
+faiss-cpu>=1.15.1
+langgraph>=1.4.7
+msoffcrypto-tool>=6.0.0
 
