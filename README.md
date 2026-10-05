@@ -1,10 +1,6 @@
-# trials_data_assistant
-
-
+# Trials Data Assistant
 <!-- README TOP -->
 <a name="readme-top"></a>
-
-# Trials Data Assistant
 
 <!-- Project presentation -->
 ## 👨‍🏫1. Project presentation
