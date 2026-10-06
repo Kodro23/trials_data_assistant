@@ -12,7 +12,7 @@ AI agent that use clinical trials data and papers to retrieve information and co
 
 
 ### 2. Method and results
-Using models GPT-5 from OpenAI, is built an agent capable of categorizing the user question into "SQL Query" and "Paper search". Then, regarding the predicted task, the agent either query the database or search for the medical answer to the user's question in the stored articles.
+Using models GPT-5 from OpenAI, is built an agent capable of categorizing the user question into "SQL Query" (ex: Give me 5 trials names about ovarian cancer) or "Paper search" (ex: What are 3 biomarkers used to evaluate treatment effect in ovarian cancer). Then, regarding the predicted task, the agent either query the database or search for the medical answer to the user's question in the stored articles.
 
 ### 🧰3. Built with
 Python 3.13.13
