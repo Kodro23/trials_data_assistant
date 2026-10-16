@@ -4,7 +4,9 @@
 
 <!-- Project presentation -->
 ## 👨‍🏫1. Project presentation
-AI agent that use clinical trials data and papers to retrieve information and compute natural language to SQL commands. 
+AI agent that use clinical trials data and papers to retrieve information and compute natural language to SQL commands.
+For storage reason, the [assistant](https://trialsdataassistant-4hha9jjtevoas93subvnnq.streamlit.app/)'s database is limited to ovarian cancer.
+
 
 ### 1. Data
 - The [ClinicalTrials.gov](https://aact.ctti-clinicaltrials.org/) registry provides information regarding characteristics of past, current, and planned clinical studies to patients, clinicians, and researchers; in addition, registry data are available for bulk download. The databse includes 605,592 clinical trials as of 2026 studying conditions like ovarian cancer, Aortic Aneurysm,HIV',Rheumatoid Arthritis, Chronic Periodontitis', etc.
@@ -23,34 +25,6 @@ Points of improvement:
 - Add more papers to the data and add an hybrid option to user's question (SQL+Paper search)
 - Improve displaying of answers in the app
 
-<!-- User's guide -->
-## 📄II. User's guide
-
-- Clone the repository in python environment and go to dir "/trials_data_assistant"
-```
-cd /trials_data_assistant
-```
-- In terminal:
-    - Create vitual envrionment
-    ```
-    python -m venv name_of_environment
-    ```
-    ```
-    source  name_of_environment/bin/activate
-    ```
-     or
-    ```
-    .\name_of_environment\Scripts\Activate.ps1
-    ```
-    ```
-    pip install -r requirements.txt
-
-    ```
-    - To run the API use the command :
-    ```
-    streamlit run app.py 
-    ```
-    Then click on URL.
 
   <img width="460" height="337" alt="image" src="https://github.com/user-attachments/assets/6d564ab1-7505-4eae-b256-ed63966dc578" />
   <img width="500" height="602" alt="02" src="https://github.com/user-attachments/assets/1b3b5989-249c-4aca-a944-6db7067aa307" />
