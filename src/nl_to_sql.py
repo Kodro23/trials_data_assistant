@@ -18,8 +18,8 @@ os.environ["OPENAI_API_KEY"]=API_KEY
 client=OpenAI()
 
 #Database schema
-with open(str(project_root)+"\\config\\schema.txt", "r") as f:
-    schema=str(f.read())
+with open(project_root / "config" / "schema.txt", "r", encoding="utf-8") as f:
+    schema=f.read()
 
 def translate_nl_to_sql(instructions,schema=schema,model="gpt-5.2"):
     """
