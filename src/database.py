@@ -10,15 +10,12 @@ def connect_to_bd():
     load_dotenv()
 
     try:
-        conn = psycopg2.connect(
-            host=os.getenv("DB_HOST"),
-            port=os.getenv("DB_PORT"),
-            dbname=os.getenv("DB_NAME"),
-            user=os.getenv("DB_USER"),
-            password=os.getenv("DB_PASSWORD"),
-        )
-        conn.set_session(readonly=True) #read-only mode to avoid modifications to the database
-        return conn         
+        url=os.getenv("DATABASE_URL")
+        if not url:
+            raise ValueError("DATABASE_URL is missing from .env")
+        conn=psycopg2.connect(url)
+        conn.set_session(readonly=True,autocommit=True)  
+        return conn       
     except Exception as e:      
         print(f"Error connecting to the database: {e}")
         return None
